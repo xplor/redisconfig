@@ -1,6 +1,24 @@
 # redisconfig
+
 Simple, robust Redis configuration for Python
 
+## Installation
+
+```
+pipenv install redisconfig
+```
+
+## Developing
+
+```
+pipenv install --dev
+```
+
+## Testing
+
+```
+pipenv run pytest
+```
 
 ## Some thoughts
 

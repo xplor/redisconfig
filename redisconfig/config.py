@@ -7,13 +7,15 @@ from redis import Redis
 
 @dataclass
 class RedisConfig:
-    host: str = "localhost"
+    host: str = "127.0.01"
     port: int = 6379
     db: int = 0
     ssl: bool = False
     password: str = None
 
-    def connection(self, db: Optional[int]=None, password: Optional[str]=None, **kwargs) -> Redis:
+    def connection(
+        self, db: Optional[int] = None, password: Optional[str] = None, **kwargs
+    ) -> Redis:
         params = kwargs.copy()
         params["host"] = self.host
         params["port"] = self.port
@@ -34,7 +36,7 @@ def from_url(url: str) -> RedisConfig:
     params = {
         "host": parts.hostname,
         "port": parts.port,
-        "db": int(url.path[1:].split("?", 1)[0] or 0),
+        "db": int(parts.path[1:].split("?", 1)[0] or 0),
         "ssl": parts.scheme == "rediss",
         "password": parts.password,
     }
@@ -44,24 +46,24 @@ def from_url(url: str) -> RedisConfig:
 
 def to_url(config: RedisConfig) -> str:
     scheme = "rediss" if config.ssl else "redis"
-    netloc = "{config.host}:{config.port}"
+    netloc = f"{config.host}:{config.port}"
     if config.password:
-        netloc = ":{config.password}@{netloc}"
+        netloc = f":{config.password}@{netloc}"
     # parts tuple consists of the following:
     # scheme, netloc, path, params, query, fragment
-    return urlunparse((scheme, netloc, config.db, None, None, None))
+    return urlunparse((scheme, netloc, str(config.db), None, None, None))
 
 
-def config(url: Optional[str]=None) -> RedisConfig:
-    """ This method should use the url param or get the REDIS_URL
-        from the environment, maybe have the pulling of that URL be it's own method
-        so it could be easily tested, and return config from from_url()
+def config(url: Optional[str] = None) -> RedisConfig:
+    """This method should use the url param or get the REDIS_URL
+    from the environment, maybe have the pulling of that URL be it's own method
+    so it could be easily tested, and return config from from_url()
     """
     pass
 
 
-def connection(url: Optional[str]=None) -> Redis:
-    """ This method should create a config, optionally with the url param,
-        call connection on that config and return it.
+def connection(url: Optional[str] = None) -> Redis:
+    """This method should create a config, optionally with the url param,
+    call connection on that config and return it.
     """
     pass
