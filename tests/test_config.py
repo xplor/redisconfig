@@ -66,8 +66,16 @@ def test_config_to_url():
     config = redisconfig.RedisConfig(
         host="example.com", port=1234, db=5, password="badpassword", ssl=True
     )
-    url = config.url
+    url = config.url()
     assert url == "rediss://redis:badpassword@example.com:1234/5"
+
+
+def test_config_to_url_replace():
+    config = redisconfig.RedisConfig(
+        host="example.com", port=1234, db=5, password="badpassword", ssl=True
+    )
+    url = config.url(db=10, password="stillabadpassword")
+    assert url == "rediss://redis:stillabadpassword@example.com:1234/10"
 
 
 def test_url_config():

@@ -1,5 +1,5 @@
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Optional
 from urllib.parse import urlparse, urlunparse, parse_qs
 
@@ -51,10 +51,36 @@ class RedisConfig:
         conn = Redis(**params)
         return conn
 
-    @property
-    def url(self) -> str:
-        """Convert the current config values into a URL"""
-        return to_url(self)
+    def replace(self, **kwargs) -> "RedisConfig":
+        """
+        Create a copy of this config but override the given parameters.
+
+        Parameters
+        ----------
+        kwargs
+            RedisConfig parameters to override in the config
+
+        Returns
+        -------
+        RedisConfig
+        """
+        return replace(self, **kwargs)
+
+    def url(self, **kwargs) -> str:
+        """
+        Convert the current config values into a connection URL.
+
+        Parameters
+        ----------
+        kwargs
+            RedisConfig parameters to override in the URL
+
+        Returns
+        -------
+        str
+        """
+        config = replace(self, **kwargs) if kwargs else self
+        return to_url(config)
 
 
 def url_from_env(var: Optional[str] = None) -> str:
@@ -163,7 +189,7 @@ def config(url: Optional[str] = None) -> RedisConfig:
     return config
 
 
-def connection(url: Optional[str] = None) -> Redis:
+def connection(url: Optional[str] = None, **kwargs) -> Redis:
     """
     Create a Redis connection a URL. If url is not specified
     the REDIS_URL environment variable will be used.
@@ -173,9 +199,11 @@ def connection(url: Optional[str] = None) -> Redis:
     ----------
     url : str, optional
         A Redis connection URL
+    kwargs
+        Passed to redis.Redis()
 
     Returns
     -------
     redis.Redis
     """
-    return config(url).connection()
+    return config(url).connection(**kwargs)
