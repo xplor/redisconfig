@@ -8,18 +8,6 @@ Simple, robust Redis configuration for Python
 pipenv install redisconfig
 ```
 
-## Developing
-
-```
-pipenv install --dev
-```
-
-## Testing
-
-```
-pipenv run pytest
-```
-
 ## Basic Usage
 
 ```
@@ -31,7 +19,7 @@ RedisConfig(host='127.0.0.1', port=6379, db=0, ssl=False, password=None)
 >>> config.host
 '127.0.0.1'
 
->>> config.url
+>>> config.url()
 'redis://127.0.0.1:6379/0'
 
 >>> config.connection()
@@ -48,4 +36,36 @@ RedisConfig(host='10.0.0.1', port=6379, db=2, ssl=True, password='badpassword')
 
 >>> redisconfig.connection()
 Redis<ConnectionPool<SSLConnection<host=10.0.0.1,port=6379,db=2>>>
+```
+
+### Update Configuration Values
+
+Create a new URL:
+
+```
+>>> config = redisconfig.RedisConfig()
+>>> config.url()
+'redis://127.0.0.1:6379/0'
+
+>>> config.url(db=2)
+'redis://127.0.0.1:6379/2'
+```
+
+Create a new RedisConfig instance:
+
+```
+>>> config.replace(db='10.0.0.1')
+RedisConfig(host='10.0.0.1', port=6379, db=0, ssl=False, password=None)
+```
+
+## Developing
+
+```
+pipenv install --dev
+```
+
+## Testing
+
+```
+pipenv run pytest
 ```
