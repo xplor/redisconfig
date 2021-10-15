@@ -3,9 +3,10 @@ from unittest import mock
 from urllib.parse import urlparse
 
 import pytest
+from redis.connection import SSLConnection
 
 import redisconfig
-from redisconfig.config import DEFAULT_ENV_VAR, DEFAULT_HOST, DEFAULT_PORT
+from redisconfig.config import DEFAULT_ENV_VAR, DEFAULT_HOST, DEFAULT_PORT, from_url
 
 
 def test_config_defaults():
@@ -95,3 +96,15 @@ def test_url_from_env_default():
 def test_url_from_env_custom():
     url = redisconfig.url_from_env("REDIS_WORKER_URL")
     assert url == "rediss:///10"
+
+
+def test_config_connection():
+    url = "rediss://:badpassword@example.com:1234/5"
+    config = from_url(url)
+    conn = config.connection()
+    conn_kwargs = conn.connection_pool.connection_kwargs
+    assert conn_kwargs["host"] == "example.com"
+    assert conn_kwargs["port"] == 1234
+    assert conn_kwargs["db"] == 5
+    assert conn_kwargs["password"] == "badpassword"
+    assert conn.connection_pool.connection_class is SSLConnection
