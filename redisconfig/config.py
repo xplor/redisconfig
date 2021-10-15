@@ -92,18 +92,19 @@ def from_url(url: str) -> RedisConfig:
     if url:
         parts = urlparse(url)
         qs_args = parse_qs(parts.query)
+        path = parts.path.lstrip("/")
 
         if "db" in qs_args:
             db = int(qs_args["db"][0])
-        elif parts.path:
+        elif path:
             # strip off the beginning / and convert to int
-            db = int(parts.path[1:])
+            db = int(path)
         else:
             db = 0
 
         kwargs = {
-            "host": parts.hostname,
-            "port": parts.port,
+            "host": parts.hostname or DEFAULT_HOST,
+            "port": parts.port or DEFAULT_PORT,
             "db": db,
             "ssl": parts.scheme == "rediss",
             "password": parts.password,
