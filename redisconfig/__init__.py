@@ -1,9 +1,12 @@
 
-from .config import RedisConfig, to_url
+from .config import RedisConfig, from_url, to_url, config, connection
 
 __version__ = "0.1.0"
 
 __all__ = [
     "RedisConfig",
-    "to_url"
+    "config",
+    "connection",
+    "from_url",
+    "to_url",
 ]
