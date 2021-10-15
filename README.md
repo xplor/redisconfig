@@ -40,6 +40,8 @@ Redis<ConnectionPool<SSLConnection<host=10.0.0.1,port=6379,db=2>>>
 
 ### Update Configuration Values
 
+You can update values directly like `config.db = 5` but sometimes you want to change values without changing the underlying configuration. The url() and replace() methods on RedisConfig allow you to make new urls or configs without changing the original values.
+
 Create a new URL:
 
 ```
