@@ -28,6 +28,16 @@ def test_from_url():
     assert config.db == 3
 
 
+def test_from_url_querystring():
+    url = "redis://:badpassword@example.com:1234/3?db=5"
+    config = redisconfig.from_url(url)
+    assert not config.ssl
+    assert config.host == "example.com"
+    assert config.port == 1234
+    assert config.password == "badpassword"
+    assert config.db == 5
+
+
 def test_from_url_ssl():
     url = "rediss://"
     config = redisconfig.from_url(url)

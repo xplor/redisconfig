@@ -1,7 +1,7 @@
 import os
 from dataclasses import dataclass
 from typing import Optional
-from urllib.parse import urlparse, urlunparse
+from urllib.parse import urlparse, urlunparse, parse_qs
 
 from redis import Redis
 
@@ -91,14 +91,24 @@ def from_url(url: str) -> RedisConfig:
     """
     if url:
         parts = urlparse(url)
-        params = {
+        qs_args = parse_qs(parts.query)
+
+        if "db" in qs_args:
+            db = int(qs_args["db"][0])
+        elif parts.path:
+            # strip off the beginning / and convert to int
+            db = int(parts.path[1:])
+        else:
+            db = 0
+
+        kwargs = {
             "host": parts.hostname,
             "port": parts.port,
-            "db": int(parts.path[1:].split("?", 1)[0] or 0),
+            "db": db,
             "ssl": parts.scheme == "rediss",
             "password": parts.password,
         }
-        config = RedisConfig(**params)
+        config = RedisConfig(**kwargs)
         return config
 
 
