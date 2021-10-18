@@ -1,5 +1,6 @@
 from .config import (
     RedisConfig,
+    RedisConfigOptions,
     config,
     connection,
     from_url,
@@ -11,6 +12,7 @@ __version__ = "0.1.0"
 
 __all__ = [
     "RedisConfig",
+    "RedisConfigOptions",
     "config",
     "connection",
     "from_url",

@@ -4,10 +4,19 @@ from typing import Optional
 from urllib.parse import urlparse, urlunparse, parse_qs
 
 from redis import Redis
+from typing_extensions import Final, TypedDict
 
-DEFAULT_ENV_VAR = "REDIS_URL"
-DEFAULT_HOST = "127.0.0.1"
-DEFAULT_PORT = 6379
+DEFAULT_ENV_VAR: Final = "REDIS_URL"
+DEFAULT_HOST: Final = "127.0.0.1"
+DEFAULT_PORT: Final = 6379
+
+
+class RedisConfigOptions(TypedDict):
+    host: Optional[str]
+    port: Optional[int]
+    db: Optional[int]
+    ssl: Optional[bool]
+    password: Optional[str]
 
 
 @dataclass
@@ -16,11 +25,11 @@ class RedisConfig:
     Represents configuration for a Redis connection.
     """
 
-    host: str = DEFAULT_HOST
-    port: int = DEFAULT_PORT
-    db: int = 0
-    ssl: bool = False
-    password: str = None
+    host: Optional[str] = DEFAULT_HOST
+    port: Optional[int] = DEFAULT_PORT
+    db: Optional[int] = 0
+    ssl: Optional[bool] = False
+    password: Optional[str] = None
 
     def connection(
         self, db: Optional[int] = None, password: Optional[str] = None, **kwargs
@@ -98,7 +107,7 @@ def url_from_env(var: Optional[str] = None) -> str:
     -------
     str
     """
-    value = os.environ.get(var or DEFAULT_ENV_VAR)
+    value = os.environ.get(var or DEFAULT_ENV_VAR, "")
     return value
 
 
@@ -128,7 +137,7 @@ def from_url(url: str) -> RedisConfig:
         else:
             db = 0
 
-        kwargs = {
+        kwargs: RedisConfigOptions = {
             "host": parts.hostname or DEFAULT_HOST,
             "port": parts.port or DEFAULT_PORT,
             "db": db,
@@ -137,6 +146,8 @@ def from_url(url: str) -> RedisConfig:
         }
         config = RedisConfig(**kwargs)
         return config
+    else:
+        raise ValueError("Argument 'url' must be a non-empty string")
 
 
 def to_url(config: RedisConfig) -> str:
