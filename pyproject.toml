@@ -9,10 +9,12 @@ python = "^3.6.2"
 redis = ">=3,<5"
 pytest = { version = "^6.2.5", optional = true }
 black = { version = "^21.9b0", optional = true }
+mypy = {version = "^0.910", optional = true}
+typing-extensions = "^3.10.0"
 
 [tool.poetry.extras]
-test = ["pytest", "black"]
-dev = ["pytest", "black"]
+test = ["pytest", "black", "mypy"]
+dev = ["pytest", "black", "mypy"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -21,3 +23,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.pytest.ini_options]
 addopts = "-v -ra"
 testpaths = "tests"
+
+[tool.mypy]
+files = "redisconfig"
+ignore_missing_imports = true
