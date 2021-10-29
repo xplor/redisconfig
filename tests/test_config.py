@@ -1,6 +1,5 @@
 import os
 from unittest import mock
-from urllib.parse import urlparse
 
 import pytest
 from redis.connection import SSLConnection
@@ -101,7 +100,7 @@ def test_env_config():
 
 def test_config_no_url_error():
     with pytest.raises(ValueError):
-        config = redisconfig.config()
+        redisconfig.config()
 
 
 @mock.patch.dict(os.environ, {DEFAULT_ENV_VAR: "rediss:///5"})
