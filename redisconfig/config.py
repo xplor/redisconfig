@@ -1,7 +1,7 @@
 import os
 from dataclasses import dataclass, replace
 from typing import Optional
-from urllib.parse import urlparse, urlunparse, parse_qs
+from urllib.parse import parse_qs, urlparse, urlunparse
 
 from redis import Redis
 from typing_extensions import Final, TypedDict
