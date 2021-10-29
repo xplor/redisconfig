@@ -9,6 +9,7 @@ python = "^3.6.2"
 redis = ">=3,<5"
 pytest = { version = "^6.2.5", optional = true }
 black = { version = "^21.9b0", optional = true }
+dataclasses = {version = "^0.8", python = "3.6"}
 
 [tool.poetry.extras]
 test = ["pytest", "black"]
