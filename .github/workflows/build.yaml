@@ -1,0 +1,42 @@
+name: build
+on:
+  push:
+  pull_request:
+  # Since this will likely be a low activity project we'll schedule a build
+  # weekly at 4:00 AM UTC so we can stay on top of project health.
+  schedule:
+    - cron: "0 4 * * 1"
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.10", "3.9", "3.8", "3.7", "3.6"]
+    name: "Tests: Python ${{ matrix.python-version }}"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Requirements
+        run: python -m pip install -U tox
+      - name: Tests
+        run: python -m tox -e 'py-redis{3,4}'
+  lint:
+    name: Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+      - name: Install Requirements
+        run: python -m pip install -U tox
+      - name: Formatting (black, isort)
+        run: python -m tox -e formatting
+      - name: Typing (mypy)
+        run: python -m tox -e mypy
+      - name: Linting (flake8)
+        run: python -m tox -e lint

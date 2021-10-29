@@ -23,13 +23,6 @@ build-backend = "poetry.core.masonry.api"
 addopts = "-v -ra"
 testpaths = "tests"
 
-[tool.mypy]
-files = "redisconfig"
-ignore_missing_imports = true
-
-[tool.isort]
-profile = "black"
-
 [tool.tox]
 legacy_tox_ini = """
 [env]
