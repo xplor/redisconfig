@@ -9,13 +9,12 @@ python = "^3.6.2"
 redis = ">=3,<5"
 pytest = { version = "^6.2.5", optional = true }
 black = { version = "^21.9b0", optional = true }
-isort = { version = "^5.10.1", optional = true }
 mypy = {version = "^0.920", optional = true}
 dataclasses = {version = "^0.8", python = "3.6"}
 
 [tool.poetry.extras]
-test = ["pytest", "black", "isort", "mypy"]
-dev = ["pytest", "black", "isort", "mypy"]
+test = ["pytest", "black", "mypy"]
+dev = ["pytest", "black", "mypy"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -55,7 +54,6 @@ commands =
 [testenv:formatting]
 commands =
     black --check {[env]FORMAT_PATHS}
-    isort --check {[env]FORMAT_PATHS}
 
 [testenv:lint]
 commands =

@@ -34,7 +34,7 @@ jobs:
         uses: actions/setup-python@v2
       - name: Install Requirements
         run: python -m pip install -U tox
-      - name: Formatting (black, isort)
+      - name: Formatting (black)
         run: python -m tox -e formatting
       - name: Typing (mypy)
         run: python -m tox -e mypy
