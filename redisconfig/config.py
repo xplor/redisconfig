@@ -196,7 +196,7 @@ def config(url: Optional[str] = None) -> RedisConfig:
         url = url_from_env()
     config = from_url(url)
     if not config:
-        raise ValueError(f"Invalid Redis URL or missing environment variable")
+        raise ValueError("Invalid Redis URL or missing environment variable")
     return config
 
 
