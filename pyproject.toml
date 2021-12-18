@@ -58,5 +58,5 @@ commands =
 
 [testenv:lint]
 commands =
-    flake8
+    flake8 --ignore=E501
 """
