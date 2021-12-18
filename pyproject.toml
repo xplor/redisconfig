@@ -10,11 +10,12 @@ redis = ">=3,<5"
 pytest = { version = "^6.2.5", optional = true }
 black = { version = "^21.9b0", optional = true }
 mypy = {version = "^0.920", optional = true}
+flake8 = {version = "^4.0.1", optional = true}
 dataclasses = {version = "^0.8", python = "3.6"}
 
 [tool.poetry.extras]
-test = ["pytest", "black", "mypy"]
-dev = ["pytest", "black", "mypy"]
+test = ["pytest", "black", "mypy", "flake8"]
+dev = ["pytest", "black", "mypy", "flake8"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
