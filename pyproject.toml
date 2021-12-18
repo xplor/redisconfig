@@ -9,12 +9,13 @@ python = "^3.6.2"
 redis = ">=3,<5"
 pytest = { version = "^6.2.5", optional = true }
 black = { version = "^21.9b0", optional = true }
-mypy = {version = "^0.910", optional = true}
-typing-extensions = "^3.10.0"
+mypy = {version = "^0.920", optional = true}
+flake8 = {version = "^4.0.1", optional = true}
+dataclasses = {version = "^0.8", python = "3.6"}
 
 [tool.poetry.extras]
-test = ["pytest", "black", "mypy"]
-dev = ["pytest", "black", "mypy"]
+test = ["pytest", "black", "mypy", "flake8"]
+dev = ["pytest", "black", "mypy", "flake8"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -27,3 +28,39 @@ testpaths = "tests"
 [tool.mypy]
 files = "redisconfig"
 ignore_missing_imports = true
+
+[tool.tox]
+legacy_tox_ini = """
+[env]
+FORMAT_PATHS = redisconfig tests
+
+[tox]
+envlist =
+    py{310,39,38,37,36}-redis{3,4}
+    mypy
+    formatting
+    lint
+skip_missing_interpreters = true
+isolated_build = true
+
+[testenv]
+extras =
+    test
+deps =
+    redis3: redis>=3,<4
+    redis4: redis>=4.0.0b1,<5
+commands =
+    pytest
+
+[testenv:mypy]
+commands =
+    mypy --install-types --non-interactive
+
+[testenv:formatting]
+commands =
+    black --check {[env]FORMAT_PATHS}
+
+[testenv:lint]
+commands =
+    flake8 --ignore=E501
+"""
