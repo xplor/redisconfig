@@ -2,7 +2,13 @@
 name = "redisconfig"
 version = "0.1.0"
 description = "Simple, robust Redis configuration for Python"
-authors = ["Your Name <you@example.com>"]
+authors = ["Jeremy Carbaugh <jeremy.carbaugh@xplortechnologies.com>", "Jason Williams <jason.williams@xplortechnologies.com>"]
+keywords = ["redis"]
+readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/xplor/redisconfig"
+repository = "https://github.com/xplor/redisconfig"
+include = ["LICENSE"]
 
 [tool.poetry.dependencies]
 python = "^3.6.2"
