@@ -8,7 +8,7 @@ from .config import (
     url_from_env,
 )
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 __all__ = [
     "RedisConfig",

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "redisconfig"
-version = "0.1.0"
+version = "0.1.1"
 description = "Simple, robust Redis configuration for Python"
 authors = ["Jeremy Carbaugh <jeremy.carbaugh@xplortechnologies.com>", "Jason Williams <jason.williams@xplortechnologies.com>"]
 keywords = ["redis"]

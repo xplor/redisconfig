@@ -4,7 +4,11 @@ from typing import Optional
 from urllib.parse import urlparse, urlunparse, parse_qs
 
 from redis import Redis
-from typing_extensions import Final, TypedDict
+
+try:
+    from typing import Final, TypedDict
+except ImportError:
+    from typing_extensions import Final, TypedDict
 
 DEFAULT_ENV_VAR: Final = "REDIS_URL"
 DEFAULT_HOST: Final = "127.0.0.1"
