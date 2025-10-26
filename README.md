@@ -4,9 +4,7 @@ Simple, robust Redis configuration for Python
 
 ## Installation
 
-```
-pip install redisconfig
-```
+`pip install redisconfig` or `uv add redisconfig`
 
 ## Basic Usage
 
@@ -65,28 +63,25 @@ RedisConfig(host='10.0.0.1', port=6379, db=0, ssl=False, password=None)
 The following things are needed to use this repository:
 
 -   [Git](https://git-scm.com)
--   [Python 3.6.2+](https://www.python.org/downloads/)
--   [Poetry](https://python-poetry.org/)
+-   [Python 3.10+](https://www.python.org/downloads/)
+-   [uv](https://docs.astral.sh/uv/)
 
-Once you have the prerequisites installed and have cloned the repository you can ready your development environment with `poetry install -E dev`. You should see output similar to:
-
-```
-$ poetry install -E dev
-Creating virtualenv redisconfig in /tmp/redisconfig/.venv
-Installing dependencies from lock file
-
-...
-
-Installing the current project: redisconfig (0.1.1)
-```
+Once you have the prerequisites installed and have cloned the repository you can ready your development environment with `uv sync --dev`.
 
 ## Testing
 
 ```
-poetry run pytest
+uv run pytest
 ```
 
 ## Changelog
+
+### 0.2.0
+
+-   Switch from poetry to uv
+-   Switch from black and flake8 to ruff
+-   Fix a few warnings
+-   Update supported Python and redis versions
 
 ### 0.1.1
 
