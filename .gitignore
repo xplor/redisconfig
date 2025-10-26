@@ -104,6 +104,9 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# ruff
+.ruff_cache/
+
 # other stuff
 .vscode/
 .DS_Store
@@ -131,5 +134,4 @@ node_modules/
 .python-version
 
 # Ignore lock files because this project is a library
-Pipfile.lock
-poetry.lock
+uv.lock
