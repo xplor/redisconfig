@@ -24,7 +24,7 @@ jobs:
       - name: Install Requirements
         run: uv sync --dev
       - name: Tests
-        run: uv run tox -e 'py-redis{3,4,5,6,7}'
+        run: uv run tox -e py-redis3,py-redis4,py-redis5,py-redis6,py-redis7
   lint:
     name: Linting
     runs-on: ubuntu-latest
