@@ -1,14 +1,9 @@
 import os
 from dataclasses import dataclass, replace
-from typing import Optional
+from typing import Final, Optional, TypedDict
 from urllib.parse import urlparse, urlunparse, parse_qs
 
 from redis import Redis
-
-try:
-    from typing import Final, TypedDict
-except ImportError:
-    from typing_extensions import Final, TypedDict
 
 DEFAULT_ENV_VAR: Final = "REDIS_URL"
 DEFAULT_HOST: Final = "127.0.0.1"
@@ -92,8 +87,8 @@ class RedisConfig:
         -------
         str
         """
-        config = replace(self, **kwargs) if kwargs else self
-        return to_url(config)
+        redis_config = replace(self, **kwargs) if kwargs else self
+        return to_url(redis_config)
 
 
 def url_from_env(var: Optional[str] = None) -> str:
@@ -148,13 +143,13 @@ def from_url(url: str) -> RedisConfig:
             "ssl": parts.scheme == "rediss",
             "password": parts.password,
         }
-        config = RedisConfig(**kwargs)
-        return config
+        redis_config = RedisConfig(**kwargs)
+        return redis_config
     else:
         raise ValueError("Argument 'url' must be a non-empty string")
 
 
-def to_url(config: RedisConfig) -> str:
+def to_url(redis_config: RedisConfig) -> str:
     """
     Converts a Redis configuration into a URL.
 
@@ -164,20 +159,20 @@ def to_url(config: RedisConfig) -> str:
 
     Parameters
     ----------
-    config : RedisConfig
+    redis_config : RedisConfig
         RedisConfig instance
 
     Returns
     -------
     str
     """
-    scheme = "rediss" if config.ssl else "redis"
-    netloc = f"{config.host}:{config.port}"
-    if config.password:
-        netloc = f"redis:{config.password}@{netloc}"
+    scheme = "rediss" if redis_config.ssl else "redis"
+    netloc = f"{redis_config.host}:{redis_config.port}"
+    if redis_config.password:
+        netloc = f"redis:{redis_config.password}@{netloc}"
     # Parts tuple consists of the following:
     # scheme, netloc, path, params, query, fragment
-    return urlunparse((scheme, netloc, str(config.db), None, None, None))
+    return urlunparse((scheme, netloc, str(redis_config.db), None, None, None))
 
 
 def config(url: Optional[str] = None) -> RedisConfig:
@@ -198,10 +193,10 @@ def config(url: Optional[str] = None) -> RedisConfig:
     """
     if not url:
         url = url_from_env()
-    config = from_url(url)
-    if not config:
+    redis_config = from_url(url)
+    if not redis_config:
         raise ValueError("Invalid Redis URL or missing environment variable")
-    return config
+    return redis_config
 
 
 def connection(url: Optional[str] = None, **kwargs) -> Redis:

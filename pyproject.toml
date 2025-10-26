@@ -1,31 +1,21 @@
-[tool.poetry]
+[project]
 name = "redisconfig"
 version = "0.1.1"
-description = "Simple, robust Redis configuration for Python"
-authors = ["Jeremy Carbaugh <jeremy.carbaugh@xplortechnologies.com>", "Jason Williams <jason.williams@xplortechnologies.com>"]
-keywords = ["redis"]
+description = "Simple, robust Redis configuration"
 readme = "README.md"
-license = "MIT"
-homepage = "https://github.com/xplor/redisconfig"
-repository = "https://github.com/xplor/redisconfig"
-include = ["LICENSE"]
+requires-python = ">=3.10"
+dependencies = [
+    "redis>=3.0.0",
+]
 
-[tool.poetry.dependencies]
-python = "^3.6.2"
-redis = ">=3,<5"
-pytest = { version = "^6.2.5", optional = true }
-black = { version = "==22.3.0", optional = true }
-mypy = {version = "^0.920", optional = true}
-flake8 = {version = "^4.0.1", optional = true}
-dataclasses = {version = "^0.8", python = "3.6"}
-
-[tool.poetry.extras]
-test = ["pytest", "black", "mypy", "flake8"]
-dev = ["pytest", "black", "mypy", "flake8"]
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+[dependency-groups]
+dev = [
+    "mypy>=1.18.2,<2",
+    "pytest>=8.4.2,<9",
+    "ruff>=0.14.2,<1",
+    "tox>=4.32.0,<5",
+    "tox-uv>=1.29.0,<2",
+]
 
 [tool.pytest.ini_options]
 addopts = "-v -ra"
@@ -42,7 +32,7 @@ FORMAT_PATHS = redisconfig tests
 
 [tox]
 envlist =
-    py{310,39,38,37,36}-redis{3,4}
+    py{314,313,312,311,310}-redis{3,4,5,6,7}
     mypy
     formatting
     lint
@@ -54,7 +44,10 @@ extras =
     test
 deps =
     redis3: redis>=3,<4
-    redis4: redis>=4.0.0b1,<5
+    redis4: redis>=4,<5
+    redis5: redis>=5,<6
+    redis6: redis>=6,<7
+    redis7: redis>=7,<8
 commands =
     pytest
 
@@ -64,9 +57,10 @@ commands =
 
 [testenv:formatting]
 commands =
-    black --check {[env]FORMAT_PATHS}
+    ruff format --check
 
 [testenv:lint]
 commands =
-    flake8 --ignore=E501
+    ruff check
 """
+
