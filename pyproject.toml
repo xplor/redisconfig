@@ -1,12 +1,24 @@
 [project]
 name = "redisconfig"
-version = "0.1.1"
+version = "0.2.0"
 description = "Simple, robust Redis configuration"
+authors = [
+    {name = "Jeremy Carbaugh", email = "jeremy.carbaugh@xplortechnologies.com"},
+    {name = "Jason Williams", email = "jason.williams@xplortechnologies.com"},
+]
+license = "MIT"
+keywords = ["redis"]
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "redis>=3.0.0",
 ]
+
+
+[project.urls]
+Homepage = "https://github.com/xplor/redisconfig"
+Repository = "https://github.com/xplor/redisconfig"
+
 
 [dependency-groups]
 dev = [
@@ -17,13 +29,32 @@ dev = [
     "tox-uv>=1.29.0,<2",
 ]
 
+
+[build-system]
+build-backend = "uv_build"
+requires = ["uv_build"]
+
+
+[tool.uv]
+package = true
+
+
+[tool.uv.build-backend]
+module-name = "redisconfig"
+module-root = ""
+namespace = true
+source-include = ["LICENSE"]
+
+
 [tool.pytest.ini_options]
 addopts = "-v -ra"
 testpaths = "tests"
 
+
 [tool.mypy]
 files = "redisconfig"
 ignore_missing_imports = true
+
 
 [tool.tox]
 legacy_tox_ini = """
